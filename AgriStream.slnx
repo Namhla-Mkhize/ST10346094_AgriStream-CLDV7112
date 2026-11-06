@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AgriStream.Functions/AgriStream.Functions.csproj" Id="9af90f36-1d2b-446a-a905-c7b0b76e2c19" />
+  <Project Path="AgriStream.LoadTest/AgriStream.LoadTest.csproj" Id="bdc018e5-1fbd-4000-9a05-1afaaab90393" />
+  <Project Path="AgriStream/AgriStream.csproj" />
+</Solution>

@@ -1,0 +1,42 @@
+﻿@model List<Azure.Storage.Blobs.Models.BlobItem>
+@{
+    ViewData["Title"] = "Drone Images";
+}
+
+<h2>Drone Images</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data" class="mb-4">
+    <div class="mb-3">
+        <input type="file" name="file" class="form-control" accept="image/*" />
+    </div>
+    <button type="submit" class="btn btn-success">Upload</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>File</th>
+            <th>Size (KB)</th>
+            <th>Uploaded</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var blob in Model)
+        {
+            <tr>
+                <td>@blob.Name</td>
+                <td>@(blob.Properties.ContentLength / 1024)</td>
+                <td>@blob.Properties.CreatedOn?.LocalDateTime</td>
+            </tr>
+        }
+    </tbody>
+</table>

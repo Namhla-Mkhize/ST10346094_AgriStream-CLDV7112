@@ -1,0 +1,78 @@
+﻿@model AgriStream.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Field Dashboard";
+}
+
+<h2>Field Dashboard</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (Model.Error != null)
+{
+    <div class="alert alert-warning">@Model.Error</div>
+}
+
+<h4 class="mt-4">Devices</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Device</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Last updated</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.Devices)
+        {
+            <tr>
+                <td>@d.DeviceId</td>
+                <td>@d.Name</td>
+                <td>@d.Status</td>
+                <td>@d.LastUpdated.ToLocalTime()</td>
+                <td>
+                    @if (User.IsInRole("Farmer") || User.IsInRole("Admin"))
+                    {
+                        <form asp-action="TriggerIrrigation" method="post" class="d-inline">
+                            <input type="hidden" name="deviceId" value="@d.DeviceId" />
+                            <input type="hidden" name="minutes" value="15" />
+                            <button type="submit" class="btn btn-sm btn-success">Trigger Irrigation</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4 class="mt-4">Latest telemetry</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Device</th>
+            <th>Time</th>
+            <th>Soil moisture (%)</th>
+            <th>Soil temp (°C)</th>
+            <th>pH</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model.Readings)
+        {
+            <tr>
+                <td>@r.DeviceId</td>
+                <td>@r.ReadingTime?.LocalDateTime</td>
+                <td>@r.SoilMoisture</td>
+                <td>@r.SoilTemperature</td>
+                <td>@r.Ph</td>
+            </tr>
+        }
+    </tbody>
+</table>
